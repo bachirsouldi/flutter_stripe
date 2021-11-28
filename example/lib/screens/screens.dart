@@ -8,6 +8,7 @@ import 'package:stripe_example/screens/wallets/apple_pay_screen_plugin.dart';
 import 'package:stripe_example/screens/wallets/google_pay_screen.dart';
 import 'package:stripe_example/screens/wallets/google_pay_stripe_screen.dart';
 import 'package:stripe_example/screens/wallets/open_apple_pay_setup_screen.dart';
+import 'package:stripe_example/widgets/platform_icons.dart';
 
 import 'card_payments/custom_card_payment_screen.dart';
 import 'card_payments/no_webhook_payment_cardform_screen.dart';
@@ -47,6 +48,7 @@ class Example extends StatelessWidget {
   final String title;
   final TextStyle? style;
   final Widget? leading;
+  final List<DevicePlatform> platformsSupported;
 
   final WidgetBuilder builder;
 
@@ -55,6 +57,7 @@ class Example extends StatelessWidget {
     required this.builder,
     this.style,
     this.leading,
+    this.platformsSupported = DevicePlatform.values,
   });
 
   @override
@@ -66,7 +69,10 @@ class Example extends StatelessWidget {
       },
       title: Text(title, style: style),
       leading: this.leading,
-      trailing: Icon(Icons.chevron_right_rounded),
+      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+        PlatformIcons(supported: platformsSupported),
+        Icon(Icons.chevron_right_rounded),
+      ]),
     );
   }
 
@@ -79,10 +85,12 @@ class Example extends StatelessWidget {
         Example(
           title: 'Single Step',
           builder: (context) => PaymentSheetScreen(),
+          platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
         ),
         Example(
           title: 'Custom Flow',
           builder: (context) => PaymentSheetScreenWithCustomFlow(),
+          platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
         ),
       ],
       expanded: true,
@@ -100,16 +108,18 @@ class Example extends StatelessWidget {
           builder: (c) => NoWebhookPaymentScreen(),
         ),
         Example(
-          title: 'Card Form',
-          builder: (c) => NoWebhookPaymentCardFormScreen(),
-        ),
-        Example(
           title: 'Card Field themes',
           builder: (c) => ThemeCardExample(),
         ),
         Example(
+          title: 'Card Form',
+          builder: (c) => NoWebhookPaymentCardFormScreen(),
+          platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
+        ),
+        Example(
           title: 'Flutter UI (not PCI compliant)',
           builder: (c) => CustomCardPaymentScreen(),
+          platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
         ),
       ],
     ),
@@ -117,44 +127,49 @@ class Example extends StatelessWidget {
       title: 'Wallets',
       children: [
         Example(
-          title: 'Apple Pay (iOS)',
+          title: 'Apple Pay',
           leading: Image.asset(
             'assets/apple_pay.png',
             width: 48,
           ),
           builder: (c) => ApplePayScreen(),
+          platformsSupported: [DevicePlatform.ios],
         ),
         Example(
-          leading: Image.asset(
-            'assets/google_play.png',
-            width: 48,
-          ),
-          title: 'Google Pay (Android)',
-          builder: (c) => GooglePayStripeScreen(),
-        ),
-        Example(
-          title: 'Apple Pay (iOS) - Pay Plugin',
+          title: 'Apple Pay - Pay Plugin',
           leading: Image.asset(
             'assets/apple_pay.png',
             width: 48,
           ),
           builder: (c) => ApplePayExternalPluginScreen(),
+          platformsSupported: [DevicePlatform.ios],
+        ),
+        Example(
+          title: 'Open Apple Pay setup',
+          leading: Image.asset(
+            'assets/apple_pay.png',
+            width: 48,
+          ),
+          builder: (c) => OpenApplePaySetup(),
+          platformsSupported: [DevicePlatform.ios],
         ),
         Example(
           leading: Image.asset(
             'assets/google_play.png',
             width: 48,
           ),
-          title: 'Google Pay (Android) - Pay Plugin',
-          builder: (c) => GooglePayScreen(),
+          title: 'Google Pay',
+          builder: (c) => GooglePayStripeScreen(),
+          platformsSupported: [DevicePlatform.android],
         ),
         Example(
-          title: 'Open Apple Pay setup (iOS)',
           leading: Image.asset(
-            'assets/apple_pay.png',
+            'assets/google_play.png',
             width: 48,
           ),
-          builder: (c) => OpenApplePaySetup(),
+          title: 'Google Pay - Pay Plugin',
+          builder: (c) => GooglePayScreen(),
+          platformsSupported: [DevicePlatform.android],
         ),
       ],
     ),
@@ -166,6 +181,7 @@ class Example extends StatelessWidget {
           width: 48,
         ),
         builder: (context) => AliPayScreen(),
+        platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
       ),
       Example(
         title: 'Ideal',
@@ -174,6 +190,7 @@ class Example extends StatelessWidget {
           width: 48,
         ),
         builder: (context) => IdealScreen(),
+        platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
       ),
       // TODO: uncomment when we can re-enable wechat pay
       // Example(
@@ -189,14 +206,17 @@ class Example extends StatelessWidget {
       Example(
         title: 'Setup Future Payment',
         builder: (c) => SetupFuturePaymentScreen(),
+        platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
       ),
       Example(
         title: 'Re-collect CVC',
         builder: (c) => CVCReCollectionScreen(),
+        platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
       ),
       Example(
         title: 'Create token (legacy)',
         builder: (context) => LegacyTokenScreen(),
+        platformsSupported: [DevicePlatform.android, DevicePlatform.ios],
       ),
     ]),
   ];
